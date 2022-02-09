@@ -10,10 +10,6 @@ import winsound
 from requests_oauthlib import OAuth1Session
 import webbrowser
 
-COSUMER_KEY = 'cAWfDuuygQxG6H53uxiHZRSsL'
-COSUMER_SECRET = 'Jv3kgNnv7DxW1wrrykFG7LnFObLouDd3LbBObsUvrFOu8hfxbA'
-ACCESS_TOKEN = '1403836122715672580-nqUGCv7arNONSEuVKxbpjs7vpQAexH'
-ACCESS_TOKEN_SECRET ='uQP5wtCBc9Pnw1qYDVqOkT9JpOx9R69jbrfEWc8QEXjY4'
 
 twitter = OAuth1Session(COSUMER_KEY,COSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET)
 url = 'https://api.twitter.com/1.1/statuses/user_timeline.json'
