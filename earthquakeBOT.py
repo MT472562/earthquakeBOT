@@ -10,10 +10,10 @@ import webbrowser
 from requests_oauthlib import OAuth1Session
 import pygame.mixer
 from re import A
-COSUMER_KEY = 'cAWfDuuyiHZRSsL'
-COSUMER_SECRET = 'Jv3kgNnv3LbBObsUvrFOu8hfxbA'
-ACCESS_TOKEN = '14038361s7vpQAexH'
-ACCESS_TOKEN_SECRET ='uQP5wtCYDc8QEXjY4'
+COSUMER_KEY = 'cAWfDuuygQxG6H53uxiHZRSsL'
+COSUMER_SECRET = 'Jv3kgNnv7DxW1wrrykFG7LnFObLouDd3LbBObsUvrFOu8hfxbA'
+ACCESS_TOKEN = '1403836122715672580-nqUGCv7arNONSEuVKxbpjs7vpQAexH'
+ACCESS_TOKEN_SECRET ='uQP5wtCBc9Pnw1qYDVqOkT9JpOx9R69jbrfEWc8QEXjY4'
 
 jsonurl551std=("https://api.p2pquake.net/v2/history?codes=551&limit=1")
 jsonurls551std = requests.get(jsonurl551std)
@@ -103,111 +103,111 @@ while True:
                     else:
                         print("取得失敗")
                         data552old_id = data552_id
-            #時間取得
-            hour = data551['earthquake']['time']
-            #マグニチュード取得
-            magnitude = data551['earthquake']['hypocenter']['magnitude']
-            if magnitude == -1.0:
-                magnitudemsg = "取得失敗"
+        #時間取得
+        hour = data551['earthquake']['time']
+        #マグニチュード取得
+        magnitude = data551['earthquake']['hypocenter']['magnitude']
+        if magnitude == -1.0:
+            magnitudemsg = "取得失敗"
+        else:
+            magnitudemsg = magnitude
+        #震源の深さ取得
+        depth = data551['earthquake']['hypocenter']['depth']
+        if depth == "ごく浅い":
+            depthmsg ="ごく浅い"
+        else:
+            depthmsg = ("約{0}km".format(depth))
+        #震源地取得
+        name = data551['earthquake']['hypocenter']['name']  
+        #data551のid取得
+        data551_source = data551['issue']['source']
+        #変更
+        error_msg = "取得失敗"
+        #point
+        points = data551['points']
+        points_count =str(points)
+        counter = points_count.count('addr')
+        maxScale = data551['earthquake']['maxScale']
+        i = 0
+        addr_list = []
+        pref_list = []
+        scale_list = []
+        for i in range(counter):
+            if points[i]['scale'] == maxScale:
+                addr = points[i]['addr']
+                addr_list.append(addr)
+                pref = points[i]['pref']
+                pref_list.append(pref)
+                scale = points[i]['scale']
+                scale_list.append(scale) 
+            i+=1
+        pref_point = (sorted(list(set(pref_list))))
+        scale_point = (str(addr_list))
+        pref_list_str =(str(pref_point))
+        scale_point_name = scale_point.replace('[', '').replace(']', '').replace("'", '')
+        pref_point_name = pref_list_str.replace('[', '').replace(']', '').replace("'", '')
+        #日付
+        year,month,day,hour_,minutes = hour[0:4],hour[5:7],hour[8:10],hour[11:13],hour[14:16]
+        if hour_ == "12":
+            hour_ = ("お昼の12")
+        elif hour_ == "0":
+            hour_ = ("深夜の0")
+        else:
+            if hour_ >= "1" and hour_ <= "11":
+                hour_ = ("午前{0}".format(hour_))
+            elif hour_ >= "13" and hour_ <= "23":
+                hour_ = (int(hour_))
+                hour_ = hour_ - 12
+                hour_ = ("午後{0}".format(hour_))
+        Tweet_msg_time = ("{0}時{1}分ごろ".format(hour_,minutes))
+        Tweet_msg = ("【地震情報】\n{0}{1}を震源とする地震がありました。\n震源の深さは{3} 地震の規模はM{2}\n最大{4}を{6}で観測しています。\n{5}\n揺れを観測した地域は以下の通りです。".format(Tweet_msg_time,name,magnitudemsg,depthmsg,maxScalemsg,domesticTsunamimsg,pref_point_name))
+        Tweet_msg_no2 = ("最大{0}を観測した地域\n{1}".format(maxScalemsg,scale_point_name))
+        print("-"*80)
+        print(Tweet_msg)
+        print("\n")
+        print(Tweet_msg_no2)
+        data551std_id = data551_id
+        if maxScale >= 30:    
+            url ='https://api.twitter.com/1.1/statuses/update.json'
+            if depth == -1 or maxScale == error_msg:
+                pass
             else:
-                magnitudemsg = magnitude
-            #震源の深さ取得
-            depth = data551['earthquake']['hypocenter']['depth']
-            if depth == "ごく浅い":
-                depthmsg ="ごく浅い"
-            else:
-                depthmsg = ("約{0}km".format(depth))
-            #震源地取得
-            name = data551['earthquake']['hypocenter']['name']  
-            #data551のid取得
-            data551_source = data551['issue']['source']
-            #変更
-            error_msg = "取得失敗"
-            #point
-            points = data551['points']
-            points_count =str(points)
-            counter = points_count.count('addr')
-            maxScale = data551['earthquake']['maxScale']
-            i = 0
-            addr_list = []
-            pref_list = []
-            scale_list = []
-            for i in range(counter):
-                if points[i]['scale'] == maxScale:
-                    addr = points[i]['addr']
-                    addr_list.append(addr)
-                    pref = points[i]['pref']
-                    pref_list.append(pref)
-                    scale = points[i]['scale']
-                    scale_list.append(scale) 
-                i+=1
-            pref_point = (sorted(list(set(pref_list))))
-            scale_point = (str(addr_list))
-            pref_list_str =(str(pref_point))
-            scale_point_name = scale_point.replace('[', '').replace(']', '').replace("'", '')
-            pref_point_name = pref_list_str.replace('[', '').replace(']', '').replace("'", '')
-            #日付
-            year,month,day,hour_,minutes = hour[0:4],hour[5:7],hour[8:10],hour[11:13],hour[14:16]
-            if hour_ == "12":
-                hour_ = ("お昼の12")
-            elif hour_ == "0":
-                hour_ = ("深夜の0")
-            else:
-                if hour_ >= "1" and hour_ <= "11":
-                    hour_ = ("午前{0}".format(hour_))
-                elif hour_ >= "13" and hour_ <= "23":
-                    hour_ = (int(hour_))
-                    hour_ = hour_ - 12
-                    hour_ = ("午後{0}".format(hour_))
-            Tweet_msg_time = ("{0}時{1}分ごろ".format(hour_,minutes))
-            Tweet_msg = ("【地震情報】\n{0}{1}を震源とする地震がありました。\n震源の深さは{3} 地震の規模はM{2}\n最大{4}を{6}で観測しています。\n{5}\n揺れを観測した地域は以下の通りです。".format(Tweet_msg_time,name,magnitudemsg,depthmsg,maxScalemsg,domesticTsunamimsg,pref_point_name))
-            Tweet_msg_no2 = ("最大{0}を観測した地域\n{1}".format(maxScalemsg,scale_point_name))
-            print("-"*80)
-            print(Tweet_msg)
-            print("\n")
-            print(Tweet_msg_no2)
-            data551std_id = data551_id
-            if maxScale >= 30:    
-                url ='https://api.twitter.com/1.1/statuses/update.json'
-                if depth == -1 or maxScale == error_msg:
-                    pass
-                else:
-                    def tweet(status, batch_mode, in_reply_to_status_id=None):
-                        global tweet_id
-                        if batch_mode:
-                            params = {"status": status, "batch_mode": "first", "weighted_character_count": True}
-                        else:
-                            params = {"status": status, "in_reply_to_status_id": in_reply_to_status_id, "batch_mode": "subsequent", "weighted_character_count": True}
-                        req = twitter.post("https://api.twitter.com/1.1/statuses/update.json", params=params)
-                        tweet_id = req.json()["id_str"]
-                    def thread_tweet(statuses=[]):
-                        if statuses != []:
-                            for i in range(len(statuses)):
-                                if i == 0:
-                                    tweet(statuses[i], True)
-                                else:
-                                    tweet(statuses[i], False, tweet_id)
-                    if __name__ == '__main__':
-                        twitter = OAuth1Session(COSUMER_KEY,COSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET)
-                        thread_tweet([Tweet_msg,Tweet_msg_no2]) 
-                    winsound.Beep(250, 300)
-                    winsound.Beep(500, 400)
-                    winsound.Beep(750, 500)
-                    winsound.Beep(1000, 2000)
-                    webbrowser.open("https://twitter.com/bot77552486")
-                    print("震度3以上のため、Twitterに投稿しました。")
-                if maxScale >= 40 or maxScale <= 49:
+                def tweet(status, batch_mode, in_reply_to_status_id=None):
+                    global tweet_id
+                    if batch_mode:
+                        params = {"status": status, "batch_mode": "first", "weighted_character_count": True}
+                    else:
+                        params = {"status": status, "in_reply_to_status_id": in_reply_to_status_id, "batch_mode": "subsequent", "weighted_character_count": True}
+                    req = twitter.post("https://api.twitter.com/1.1/statuses/update.json", params=params)
+                    tweet_id = req.json()["id_str"]
+                def thread_tweet(statuses=[]):
+                    if statuses != []:
+                        for i in range(len(statuses)):
+                            if i == 0:
+                                tweet(statuses[i], True)
+                            else:
+                                tweet(statuses[i], False, tweet_id)
+                if __name__ == '__main__':
+                    twitter = OAuth1Session(COSUMER_KEY,COSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET)
+                    thread_tweet([Tweet_msg,Tweet_msg_no2]) 
+                winsound.Beep(250, 300)
+                winsound.Beep(500, 400)
+                winsound.Beep(750, 500)
+                winsound.Beep(1000, 2000)
+                webbrowser.open("https://twitter.com/bot77552486")
+                print("震度3以上のため、Twitterに投稿しました。")
+            if maxScale >= 40 or maxScale <= 49:
+                pygame.mixer.init() #初期化
+                pygame.mixer.music.load("Desktop/EEW1.wav")
+                pygame.mixer.music.play(2) 
+                time.sleep(3)
+                if maxScale >= 50:
                     pygame.mixer.init() #初期化
-                    pygame.mixer.music.load("Desktop/EEW1.wav")
-                    pygame.mixer.music.play(2) 
-                    time.sleep(3)
-                    if maxScale >= 50:
-                        pygame.mixer.init() #初期化
-                        pygame.mixer.music.load("Desktop/EEW2.wav")
-                        pygame.mixer.music.play(1) 
-                        time.sleep(13)
-            else:
-                print("震度3以下のため、Twitterに投稿をしていません。")
+                    pygame.mixer.music.load("Desktop/EEW2.wav")
+                    pygame.mixer.music.play(1) 
+                    time.sleep(13)
+        else:
+            print("震度3以下のため、Twitterに投稿をしていません。")
     end_time = time.time()
     total_time = end_time-start_time
     if total_time >= 5:
