@@ -11,10 +11,10 @@ import wave
 from requests_oauthlib import OAuth1Session
 import pygame.mixer
 from re import A
-COSUMER_KEY = 'cAWfDuuygQxG6H53uxiHZRSsL'
-COSUMER_SECRET = 'Jv3kgNnv7DxW1wrrykFG7LnFObLouDd3LbBObsUvrFOu8hfxbA'
-ACCESS_TOKEN = '1403836122715672580-nqUGCv7arNONSEuVKxbpjs7vpQAexH'
-ACCESS_TOKEN_SECRET ='uQP5wtCBc9Pnw1qYDVqOkT9JpOx9R69jbrfEWc8QEXjY4'
+COSUMER_KEY = ''
+COSUMER_SECRET = ''
+ACCESS_TOKEN = ''
+ACCESS_TOKEN_SECRET =''
 
 jsonurl551std=("https://api.p2pquake.net/v2/history?codes=551&limit=1")
 jsonurls551std = requests.get(jsonurl551std)
