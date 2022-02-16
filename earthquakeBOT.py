@@ -11,10 +11,10 @@ import wave
 from requests_oauthlib import OAuth1Session
 import pygame.mixer
 from re import A
-COSUMER_KEY = ''
-COSUMER_SECRET = ''
-ACCESS_TOKEN = ''
-ACCESS_TOKEN_SECRET =''
+COSUMER_KEY = 'cAWfDuuygQxG6H53uxiHZRSsL'
+COSUMER_SECRET = 'Jv3kgNnv7DxW1wrrykFG7LnFObLouDd3LbBObsUvrFOu8hfxbA'
+ACCESS_TOKEN = '1403836122715672580-nqUGCv7arNONSEuVKxbpjs7vpQAexH'
+ACCESS_TOKEN_SECRET ='uQP5wtCBc9Pnw1qYDVqOkT9JpOx9R69jbrfEWc8QEXjY4'
 
 jsonurl551std=("https://api.p2pquake.net/v2/history?codes=551&limit=1")
 jsonurls551std = requests.get(jsonurl551std)
@@ -27,6 +27,9 @@ jsonurl552old=("https://api.p2pquake.net/v2/history?codes=552&limit=1")
 jsonurls552old = requests.get(jsonurl552old)
 text552old = jsonurls552old.text
 data552old = json.loads(text552old)
+
+maxScale = 0
+
 if data552old == []:
     pass
 else:
@@ -212,6 +215,7 @@ while True:
     alert_maxScale_list = [10,20,30,40,45,50,55,60,70]
     alert_list = ["10.wav","20.wav","30.wav","40.wav","45wav","50.wav","55.wav","60.wav","70.wav"]
     counts=0
+    n = 0
     for n in alert_maxScale_list:
         if maxScale == n:
             alert_list_name = alert_list[counts]
