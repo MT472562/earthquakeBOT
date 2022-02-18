@@ -14,7 +14,7 @@ from re import A
 COSUMER_KEY = ''
 COSUMER_SECRET = ''
 ACCESS_TOKEN = ''
-ACCESS_TOKEN_SECRET =''
+ACCESS_TOKEN_SECRET ='
 
 jsonurl551std=("https://api.p2pquake.net/v2/history?codes=551&limit=1")
 jsonurls551std = requests.get(jsonurl551std)
@@ -210,27 +210,27 @@ while True:
                     pygame.mixer.music.load("Desktop/EEW2.wav")
                     pygame.mixer.music.play(1) 
                     time.sleep(13)
+            alert_maxScale_list = [10,20,30,40,45,50,55,60,70]#エラー要因の可能性あり　　　　　　　　　ここから230行まで
+            alert_list = ["10.wav","20.wav","30.wav","40.wav","45wav","50.wav","55.wav","60.wav","70.wav"]
+            counts=0
+            for n in alert_maxScale_list:
+                if maxScale == n:
+                    alert_list_name = alert_list[counts]
+                    alert_list_name_path = ("desktop/{0}".format(alert_list_name))
+                    with wave.open(alert_list_name_path,  'rb') as wr:
+                        fr = wr.getframerate()
+                        fn = wr.getnframes()
+                        alert_sleep_time = fn/fr+0.1
+                        print(alert_sleep_time)
+                    if maxScale >= 10:
+                            pygame.mixer.init() #初期化
+                            pygame.mixer.music.load("desktop/{0}".format(alert_list_name))
+                            pygame.mixer.music.play(1) 
+                            time.sleep(alert_sleep_time)
+                    print(alert_list_name)
+                counts+=1#エラー要因の可能性　末
         else:
             print("震度3以下のため、Twitterに投稿をしていません。")
-    alert_maxScale_list = [10,20,30,40,45,50,55,60,70]
-    alert_list = ["10.wav","20.wav","30.wav","40.wav","45wav","50.wav","55.wav","60.wav","70.wav"]
-    counts=0
-    n = 0
-    for n in alert_maxScale_list:
-        if maxScale == n:
-            alert_list_name = alert_list[counts]
-            alert_list_name_path = ("desktop/{0}".format(alert_list_name))
-            with wave.open(alert_list_name_path,  'rb') as wr:
-                fr = wr.getframerate()
-                fn = wr.getnframes()
-                alert_sleep_time = fn/fr+0.1
-                print(alert_sleep_time)
-            pygame.mixer.init() #初期化
-            pygame.mixer.music.load("desktop/{0}".format(alert_list_name))
-            pygame.mixer.music.play(1) 
-            time.sleep(alert_sleep_time)
-            print(alert_list_name)
-        counts+=1
     end_time = time.time()
     total_time = end_time-start_time
     if total_time >= 5:
