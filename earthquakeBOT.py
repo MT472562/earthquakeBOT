@@ -5,11 +5,9 @@ import requests
 import datetime
 import ast
 import tweepy
-import winsound
 import webbrowser
 import wave
 from requests_oauthlib import OAuth1Session
-import pygame.mixer
 from re import A
 COSUMER_KEY = ''
 COSUMER_SECRET = ''
@@ -48,9 +46,6 @@ while True:
         pass
     else:
         #震度に関する情報
-        pygame.mixer.init() #初期化
-        pygame.mixer.music.load("Desktop/normal.wav")
-        pygame.mixer.music.play(1) 
         time.sleep(2)
         cunt = 0
         maxScale = data551['earthquake']['maxScale']
@@ -194,49 +189,18 @@ while True:
                 if __name__ == '__main__':
                     twitter = OAuth1Session(COSUMER_KEY,COSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET)
                     thread_tweet([Tweet_msg,Tweet_msg_no2]) 
-                winsound.Beep(250, 300)
-                winsound.Beep(500, 400)
-                winsound.Beep(750, 500)
-                winsound.Beep(1000, 2000)
                 webbrowser.open("https://twitter.com/bot77552486")
-                print("震度3以上のため、Twitterに投稿しました。")
-            if maxScale >= 40 or maxScale <= 49:
-                pygame.mixer.init() #初期化
-                pygame.mixer.music.load("Desktop/EEW1.wav")
-                pygame.mixer.music.play(2) 
-                time.sleep(3)
-                if maxScale >= 50:
-                    pygame.mixer.init() #初期化
-                    pygame.mixer.music.load("Desktop/EEW2.wav")
-                    pygame.mixer.music.play(1) 
-                    time.sleep(13)
-            alert_maxScale_list = [10,20,30,40,45,50,55,60,70]#エラー要因の可能性あり　　　　　　　　　ここから230行まで
-            alert_list = ["10.wav","20.wav","30.wav","40.wav","45wav","50.wav","55.wav","60.wav","70.wav"]
-            counts=0
-            for n in alert_maxScale_list:
-                if maxScale == n:
-                    alert_list_name = alert_list[counts]
-                    alert_list_name_path = ("desktop/{0}".format(alert_list_name))
-                    with wave.open(alert_list_name_path,  'rb') as wr:
-                        fr = wr.getframerate()
-                        fn = wr.getnframes()
-                        alert_sleep_time = fn/fr+0.1
-                        print(alert_sleep_time)
-                    if maxScale >= 10:
-                            pygame.mixer.init() #初期化
-                            pygame.mixer.music.load("desktop/{0}".format(alert_list_name))
-                            pygame.mixer.music.play(1) 
-                            time.sleep(alert_sleep_time)
-                    print(alert_list_name)
-                counts+=1#エラー要因の可能性　末
+                print("\n")
+                print("I posted this on Twitter because of the intensity 3 and above.")
         else:
-            print("震度3以下のため、Twitterに投稿をしていません。")
+            print("\n")
+            print("I have not posted on Twitter because the seismic intensity is below 3.")
     end_time = time.time()
     total_time = end_time-start_time
-    if total_time >= 5:
+    if total_time >= 3:
         sleep_time = total_time
     else:
-        sleep_time = 5-total_time
+        sleep_time = 3-total_time
         
     print("\r"+str(total_time),end="")
     time.sleep(sleep_time)
