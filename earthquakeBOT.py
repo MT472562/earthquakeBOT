@@ -9,10 +9,10 @@ import webbrowser
 import wave
 from requests_oauthlib import OAuth1Session
 from re import A
-COSUMER_KEY = ''
-COSUMER_SECRET = ''
-ACCESS_TOKEN = ''
-ACCESS_TOKEN_SECRET ='
+COSUMER_KEY = 'L'
+COSUMER_SECRET = 'JvA'
+ACCESS_TOKEN = '1'
+ACCESS_TOKEN_SECRET ='4'
 
 jsonurl551std=("https://api.p2pquake.net/v2/history?codes=551&limit=1")
 jsonurls551std = requests.get(jsonurl551std)
